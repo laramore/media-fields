@@ -44,31 +44,6 @@ return [
                 ],
             ],
         ],
-        Url::class => [
-            'type' => 'url',
-            'max_length' => Schema::getFacadeRoot()::$defaultStringLength,
-            'secured' => true,
-            'proxy' => [
-                'configurations' => [
-                    'dry' => [
-                        'static' => true,
-                        'allow_multi' => false,
-                    ],
-                    'hydrate' => [
-                        'static' => true,
-                        'allow_multi' => false,
-                    ],
-                    'fix' => [],
-                ],
-            ],
-            'patterns' => [
-                'identifier' => '/^\S+$/',
-                'protocol' => 'http://',
-                'secured_protocol' => 'https://',
-                'uri' => '/^\S+:\/{0,2}\S+$/',
-                'flags' => null,
-            ]
-        ],
         Social::class => [
             'type' => 'url',
             'max_length' => Schema::getFacadeRoot()::$defaultStringLength,
