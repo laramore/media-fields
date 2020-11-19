@@ -14,7 +14,7 @@ return [
     'configurations' => [
         'url' => [
             'native' => 'url',
-            'parent' => 'pattern',
+            'parent' => 'uri',
         ],
         'file' => [
             'native' => 'file',

@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
+namespace Laramore\Fields;
 
+use Illuminate\Support\Facades\Schema;
 
 return [
 
@@ -15,7 +16,7 @@ return [
     */
 
     'configurations' => [
-        'file' => [
+        File::class => [
             'type' => 'file',
             'max_size' => 2048,
             'mime_types' => [
@@ -29,7 +30,7 @@ return [
                 ],
             ],
         ],
-        'image' => [
+        Image::class => [
             'type' => 'image',
             'max_size' => 2048,
             'mime_types' => [
@@ -43,7 +44,32 @@ return [
                 ],
             ],
         ],
-        'social' => [
+        Url::class => [
+            'type' => 'url',
+            'max_length' => Schema::getFacadeRoot()::$defaultStringLength,
+            'secured' => true,
+            'proxy' => [
+                'configurations' => [
+                    'dry' => [
+                        'static' => true,
+                        'allow_multi' => false,
+                    ],
+                    'hydrate' => [
+                        'static' => true,
+                        'allow_multi' => false,
+                    ],
+                    'fix' => [],
+                ],
+            ],
+            'patterns' => [
+                'identifier' => '/^\S+$/',
+                'protocol' => 'http://',
+                'secured_protocol' => 'https://',
+                'uri' => '/^\S+:\/{0,2}\S+$/',
+                'flags' => null,
+            ]
+        ],
+        Social::class => [
             'type' => 'url',
             'max_length' => Schema::getFacadeRoot()::$defaultStringLength,
             'proxy' => [

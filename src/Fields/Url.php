@@ -17,7 +17,7 @@ class Url extends Uri
      *
      * @var bool
      */
-    protected $secured = false;
+    protected $secured;
 
     /**
      * Return the protocol pattern.
