@@ -17,7 +17,9 @@ return [
 
     'configurations' => [
         File::class => [
-            'type' => 'file',
+            'options' => [
+                'visible', 'fillable', 'required',
+            ],
             'max_size' => 2048,
             'mime_types' => [
                 'pdf', 'jpg', 'jpeg', 'png', 'docx', 'doc', 'odp', 'zip', 'txt',
@@ -29,9 +31,13 @@ return [
                     'delete' => [],
                 ],
             ],
+            'migration_name' => 'text',
+            'factory_name' => 'image',
         ],
         Image::class => [
-            'type' => 'image',
+            'options' => [
+                'visible', 'fillable', 'required',
+            ],
             'max_size' => 2048,
             'mime_types' => [
                 'jpg', 'jpeg', 'png',
@@ -43,9 +49,13 @@ return [
                     'delete' => [],
                 ],
             ],
+            'migration_name' => 'text',
+            'factory_name' => 'image',
         ],
         Social::class => [
-            'type' => 'url',
+            'options' => [
+                'visible', 'fillable', 'required',
+            ],
             'max_length' => Schema::getFacadeRoot()::$defaultStringLength,
             'proxy' => [
                 'configurations' => [
@@ -70,7 +80,9 @@ return [
                 'youtube' => '(?:https?:)?\/\/(?:[A-z]+\.)?youtube.com\/user\/(?P<username>[A-z0-9]+)\/?',
                 'reddit' => '(?:https?:)?\/\/(?:[a-z]+\.)?reddit\.com\/(?:u(?:ser)?)\/(?P<username>[A-z0-9\-\_]*)\/?',
                 'snapchat' => '(?:https?:)?\/\/(?:www\.)?snapchat\.com\/add\/(?P<username>[A-z0-9\.\_\-]+)\/?'
-            ]
+            ],
+            'migration_name' => 'text',
+            'factory_name' => 'image',
         ],
     ],
     
