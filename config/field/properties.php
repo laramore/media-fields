@@ -17,13 +17,13 @@ return [
 
     File::class => [
         'options' => [
-            'visible', 'fillable', 'required',
+            'select', 'visible', 'fillable', 'required',
         ],
         'max_size' => 2048,
         'mime_types' => [
             'pdf', 'jpg', 'jpeg', 'png', 'docx', 'doc', 'odp', 'zip', 'txt',
         ],
-        'root_path' => \storage_path(''),
+        'root_path' => \storage_path(),
         'proxy' => [
             'configurations' => [
                 'save' => [],
@@ -35,13 +35,13 @@ return [
     ],
     Image::class => [
         'options' => [
-            'visible', 'fillable', 'required',
+            'select', 'visible', 'fillable', 'required',
         ],
         'max_size' => 2048,
         'mime_types' => [
             'jpg', 'jpeg', 'png',
         ],
-        'root_path' => \public_path(''),
+        'root_path' => \public_path(),
         'proxy' => [
             'configurations' => [
                 'save' => [],
@@ -53,7 +53,7 @@ return [
     ],
     Social::class => [
         'options' => [
-            'visible', 'fillable', 'required',
+            'select', 'visible', 'fillable', 'required',
         ],
         'max_length' => Schema::getFacadeRoot()::$defaultStringLength,
         'proxy' => [
@@ -83,5 +83,5 @@ return [
         'migration_name' => 'text',
         'factory_name' => 'image',
     ],
-    
+
 ];

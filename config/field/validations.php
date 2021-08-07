@@ -6,21 +6,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default text fields
+    | Default text validations
     |--------------------------------------------------------------------------
     |
-    | This option defines the default text fields.
+    | This option defines the default text validations.
     |
     */
 
     File::class => [
-        'formater' => 'file',
-        'parameters' => [
-            base_path('vendor/laramore/media-fields/assets'), '/tmp'
-        ],
+        
     ],
     Image::class => [
-        'formater' => 'image',
+
     ],
     Social::class => [
         

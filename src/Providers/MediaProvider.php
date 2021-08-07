@@ -33,6 +33,10 @@ class MediaProvider extends ServiceProvider
         );
 
         $this->mergeConfigFrom(
+            __DIR__."/../../config/field/validations.php", "field.validations",
+        );
+
+        $this->mergeConfigFrom(
             __DIR__."/../../config/field/factories.php", "field.factories",
         );
 

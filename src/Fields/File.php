@@ -40,6 +40,13 @@ class File extends Char
     protected $filePath;
 
     /**
+     * Root path.
+     *
+     * @var string
+     */
+    protected $rootPath;
+
+    /**
      * File name.
      *
      * @var callback|\Closure
@@ -104,7 +111,7 @@ class File extends Char
      */
     public function getRootPath(): string
     {
-        return $this->getConfig('root_path');
+        return $this->rootPath;
     }
 
     /**
