@@ -33,25 +33,25 @@ class File extends Char
     protected $maxSize;
 
     /**
-     * File path.
-     *
-     * @var callback|\Closure
-     */
-    protected $filePath;
-
-    /**
-     * Root path.
+     * Disk name.
      *
      * @var string
      */
-    protected $rootPath;
+    protected $disk;
 
     /**
-     * File name.
+     * Path value.
      *
-     * @var callback|\Closure
+     * @var string
      */
-    protected $fileName;
+    protected $path;
+
+    /**
+     * Path value.
+     * TODO: Check callback.
+     * @var callback
+     */
+    protected $filename;
 
     /**
      * During locking, add observers for saving and deleted.
@@ -77,11 +77,19 @@ class File extends Char
         $file = $model->getAttribute($this->getNative());
 
         if ($file instanceof UploadedFile) {
-            $path = $this->getFilePath($model, $file);
-            $name = $this->getFileName($model, $file);
-            $file->move($path, $name);
+            $path = $this->path;
 
-            $model->setAttribute($this->getNative(), new EloquentFile($path.DIRECTORY_SEPARATOR.$name));
+            if (is_callable($path)) {
+                $path = $path($model);
+            }
+
+            $fileName = $this->fileName
+                ? $this->fileName($model, $file)
+                : $file->getFileName();
+
+            $filePath = $this->getStorage()->putFileAs($path, $file, $fileName);
+            dump($path, $file, $fileName, $filePath);
+            $model->setAttribute($this->getNative(), new EloquentFile($filePath, false));
         }
 
         return $model;
@@ -98,20 +106,10 @@ class File extends Char
         $file = $model->getAttribute($this->getNative());
 
         if ($file instanceof EloquentFile) {
-            return Storage::delete($file->getPath());
+            return $this->getStorage()->delete($file->getPath());
         }
 
         return false;
-    }
-
-    /**
-     * Get root path.
-     *
-     * @return string
-     */
-    public function getRootPath(): string
-    {
-        return $this->rootPath;
     }
 
     /**
@@ -141,38 +139,22 @@ class File extends Char
      */
     public function serialize($value)
     {
-        return Storage::url($value);
+        $config = config('filesystems.disks.'.$this->disk);
+
+        if ($config['driver'] === 'local') {
+            return $config['root'].DIRECTORY_SEPARATOR.$value;
+        }
+
+        return $this->getStorage()->url($value);
     }
 
     /**
-     * Return the file path.
+     * Get storage.
      *
-     * @param LaramoreModel $model
-     * @param UploadedFile  $file
-     * @return string
+     * @return mixed
      */
-    public function getFilePath(LaramoreModel $model, UploadedFile $file): string
+    public function getStorage()
     {
-        if (\is_null($this->filePath)) {
-            return $this->getRootPath();
-        }
-
-        return $this->filePath($model, $file);
-    }
-
-    /**
-     * Return the file name.
-     *
-     * @param LaramoreModel $model
-     * @param UploadedFile  $file
-     * @return string
-     */
-    public function getFileName(LaramoreModel $model, UploadedFile $file): string
-    {
-        if (\is_null($this->fileName)) {
-            return $file->getFileName();
-        }
-
-        return $this->fileName($model, $file);
+        return Storage::disk($this->disk);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Laramore\Fields;
 
-use Illuminate\Support\Facades\Schema;
-
 return [
 
     /*
@@ -23,7 +21,8 @@ return [
         'mime_types' => [
             'pdf', 'jpg', 'jpeg', 'png', 'docx', 'doc', 'odp', 'zip', 'txt',
         ],
-        'root_path' => \storage_path(),
+        'disk' => 'local',
+        'path' => '',
         'proxy' => [
             'configurations' => [
                 'save' => [],
@@ -41,7 +40,8 @@ return [
         'mime_types' => [
             'jpg', 'jpeg', 'png',
         ],
-        'root_path' => \public_path(),
+        'disk' => 'public',
+        'path' => 'images',
         'proxy' => [
             'configurations' => [
                 'save' => [],
@@ -55,7 +55,6 @@ return [
         'options' => [
             'select', 'visible', 'fillable', 'required',
         ],
-        'max_length' => Schema::getFacadeRoot()::$defaultStringLength,
         'proxy' => [
             'configurations' => [
                 'fix' => [],
