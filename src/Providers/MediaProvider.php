@@ -39,9 +39,5 @@ class MediaProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__."/../../config/field/factories.php", "field.factories",
         );
-
-        $this->mergeConfigFrom(
-            __DIR__."/../../config/option.php", "option",
-        );
     }
 }

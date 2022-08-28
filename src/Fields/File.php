@@ -51,7 +51,8 @@ class File extends Char
      * TODO: Check callback.
      * @var callback
      */
-    protected $filename;
+    protected $fileName;
+
 
     /**
      * During locking, add observers for saving and deleted.
@@ -74,7 +75,7 @@ class File extends Char
      */
     public function save(LaramoreModel $model)
     {
-        $file = $model->getAttribute($this->getNative());
+        $file = $this->get($model);
 
         if ($file instanceof UploadedFile) {
             $path = $this->path;
@@ -84,12 +85,12 @@ class File extends Char
             }
 
             $fileName = $this->fileName
-                ? $this->fileName($model, $file)
+                ? call_user_func($this->fileName, $model, $file)
                 : $file->getFileName();
 
-            $filePath = $this->getStorage()->putFileAs($path, $file, $fileName);
-            dump($path, $file, $fileName, $filePath);
-            $model->setAttribute($this->getNative(), new EloquentFile($filePath, false));
+                $filePath = $this->getStorage()->putFileAs($path, $file, $fileName.'.'.$file->extension());
+
+            $this->set($model, $filePath);
         }
 
         return $model;
@@ -103,13 +104,7 @@ class File extends Char
      */
     public function delete(LaramoreModel $model)
     {
-        $file = $model->getAttribute($this->getNative());
-
-        if ($file instanceof EloquentFile) {
-            return $this->getStorage()->delete($file->getPath());
-        }
-
-        return false;
+        return $this->getStorage()->delete($this->get($model));
     }
 
     /**
@@ -120,12 +115,8 @@ class File extends Char
      */
     public function cast($value)
     {
-        if (\is_string($value)) {
-            if ($value[0] === DIRECTORY_SEPARATOR) {
-                return new UploadedFile($value, \basename($value), null, null, true);
-            }
-
-            return new EloquentFile($this->getRootPath().$value);
+        if (\is_string($value) && $value[0] === DIRECTORY_SEPARATOR) {
+            return new UploadedFile($value, \basename($value), null, null, true);
         }
 
         return $value;
@@ -137,15 +128,28 @@ class File extends Char
      * @param EloquentFile|mixed $value
      * @return string|mixed
      */
-    public function serialize($value)
+    public function serialize($value, ...$args)
     {
-        $config = config('filesystems.disks.'.$this->disk);
+        if (config('filesystems.disks.'.$this->disk.'.visibility') !== 'public') {
+            $minutes = config('filesystems.temporary_duration', 30);
 
-        if ($config['driver'] === 'local') {
-            return $config['root'].DIRECTORY_SEPARATOR.$value;
+            return $this->getStorage()->temporaryUrl(
+                $value,
+                now()->addMinutes($minutes)
+            );
         }
 
         return $this->getStorage()->url($value);
+    }
+
+    /**
+     * Return content to download.
+     *
+     * @return string|mixed
+     */
+    public function download($model)
+    {
+        return $this->getStorage()->download($this->get($model));
     }
 
     /**

@@ -19,9 +19,9 @@ return [
         ],
         'max_size' => 2048,
         'mime_types' => [
-            'pdf', 'jpg', 'jpeg', 'png', 'docx', 'doc', 'odp', 'zip', 'txt',
+            'svg', 'pdf', 'jpg', 'jpeg', 'png', 'docx', 'doc', 'odp', 'zip', 'txt',
         ],
-        'disk' => 'local',
+        'disk' => config('filesystems.default', 'local'),
         'path' => '',
         'proxy' => [
             'configurations' => [
@@ -29,8 +29,6 @@ return [
                 'delete' => [],
             ],
         ],
-        'migration_name' => 'text',
-        'factory_name' => 'image',
     ],
     Image::class => [
         'options' => [
@@ -38,9 +36,9 @@ return [
         ],
         'max_size' => 2048,
         'mime_types' => [
-            'jpg', 'jpeg', 'png',
+            'svg', 'jpg', 'jpeg', 'png',
         ],
-        'disk' => 'public',
+        'disk' => config('filesystems.default', 'local'),
         'path' => 'images',
         'proxy' => [
             'configurations' => [
@@ -48,8 +46,6 @@ return [
                 'delete' => [],
             ],
         ],
-        'migration_name' => 'text',
-        'factory_name' => 'image',
     ],
     Social::class => [
         'options' => [
@@ -72,7 +68,7 @@ return [
             'twitter' => '(?:https?:)?\/\/(?:[A-z]+\.)?twitter\.com\/@?(?P<username>[A-z0-9_]+)\/?',
             'github' => '(?:https?:)?\/\/(?:www\.)?github\.com\/(?P<login>[A-z0-9_-]+)\/?',
             'linkedin' => '(?:https?:)?\/\/(?:[\w]+\.)?linkedin\.com\/in\/(?P<permalink>[\w\-\_À-ÿ%]+)\/?',
-            'facbeook' => '[((?:https?:)?\/\/(?:www\.)?(?:facebook|fb)\.com\/(?P<profile>(?![A-z]+\.php)(?!marketplace|gaming|watch|me|messages|help|search|groups)[A-z0-9_\-\.]+)\/?)((?:https?:)?\/\/(?:www\.)facebook.com/(?:profile.php\?id=)?(?P<id>[0-9]+))]',
+            'facebook' => '[((?:https?:)?\/\/(?:www\.)?(?:facebook|fb)\.com\/(?P<profile>(?![A-z]+\.php)(?!marketplace|gaming|watch|me|messages|help|search|groups)[A-z0-9_\-\.]+)\/?)((?:https?:)?\/\/(?:www\.)facebook.com/(?:profile.php\?id=)?(?P<id>[0-9]+))]',
             'profil' => '(?:https?:)?\/\/(?:www\.)?(?:instagram\.com|instagr\.am)\/(?P<username>[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)',
             'phone' => '(?:tel|phone|mobile):(?P<number>\+?[0-9. -]+)',
             'youtube' => '(?:https?:)?\/\/(?:[A-z]+\.)?youtube.com\/user\/(?P<username>[A-z0-9]+)\/?',
